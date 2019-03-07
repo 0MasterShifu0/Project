@@ -1,0 +1,49 @@
+访问地址:
+http://localhost:8080/druid/index.html
+http://localhost:8080/user/1
+教程参考地址:
+springBoot(八)整合之整合阿里druid数据库连接池
+https://blog.csdn.net/CoffeeAndIce/article/details/78707819
+http://blog.csdn.net/liuchuanhong1/article/details/55050131
+
+启动报错信息,但是不影响访问:
+DiscoveryClient_UNKNOWN/PC-20150126MEQA - was unable to refresh its cache! status = Cannot execute request on any known server
+出现这种错误是因为:
+
+Eureka服务注册中心也会将自己作为客户端来尝试注册它自己，所以我们需要禁用它的客户端注册行为。 禁止方式如下:
+在 yml中设置
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+https://blog.csdn.net/haoxiaoyong1014/article/details/79391519
+
+
+5/28
+Spring Boot实战：数据库操作
+https://www.cnblogs.com/paddix/p/8178943.html
+
+Spring中常见的bean创建异常
+https://blog.csdn.net/zzg1229059735/article/details/51320218
+
+启动报错信息:nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException
+已解决
+解决原因分析和办法:dao层实现类没有加扫描注解信息,导致被注入类中找不到改类信息
+@Repository   //加该注解强制扫描这个类
+public class ArticleDaoJdbcTemplateImpl implements ArticleDao {
+
+使用Test类:
+@RunWith( SpringJUnit4ClassRunner.class )
+@SpringBootTest(classes = SpringbootJpaDruidApplication.class)
+public class ArticleDaoTest {
+    @Autowired
+    private ArticleDao articleDao;
+
+启动报错信息:nested exception is org.springframework.beans.BeanInstantiationException
+
+
+springBoot集成mybatis框架报错Invalid bound statement (not found)
+mapper映射配置的.xml文件位置没有放对,.yml配置的mybatis的映射路径有问题
+
+Error getting generated key or setting result to parameter object. Cause: org.apache.ibatis.executor
+暂时删除主键配置即可,下次遇到可能还有其他问题
+   mybatis在插入的时候，获取插入主键报错
+https://bbs.csdn.net/topics/380146054

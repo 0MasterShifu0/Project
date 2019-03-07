@@ -1,0 +1,105 @@
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+
+//gradle配置入门参考地址https://www.cnblogs.com/gzdaijie/p/5296624.html#_caption_0
+//sourceCompatibility = 1.8
+// 在这个段落中你可以声明你的build脚本需要的依赖和解析下载该依赖所使用的仓储位置
+buildscript {
+    ext {
+        springBootVersion = '1.5.4.RELEASE'
+    }
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+/*
+ * 在这个段落中你可以声明使用哪些插件
+ * apply plugin: 'java' 代表这是一个Java项目，需要使用java插件
+ * 如果想生成一个 `Intellij IDEA` 的工程，类似的如果要生成
+ * eclipse工程，就写 apply plugin: 'eclipse'
+ * Spring Boot，应用Spring Boot插件
+ */
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'war' // war打包插件
+
+apply plugin: 'application'
+apply plugin: 'java'
+
+/*
+启动Application插件 其中ReadApplication  替换为自己的启动类就可以https://blog.csdn.net/MaxWoods/article/details/71583663
+jar {
+    manifest {
+        attributes 'Main-Class': 'ReadApplication'
+    }
+}
+
+mainClassName = 'ReadApplication'*/
+
+// 在这个段落中你可以声明编译后的Jar文件信息
+//jar {
+//    baseName = 'xykd'
+//    version = '1.0'
+//}
+war {} // war打包插件
+
+// 在这个段落中你可以声明源文件和目标编译后的Java版本兼容性
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// 在这个段落中你可以声明在哪里可以找到你的项目依赖
+repositories {
+    mavenLocal()
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+}
+
+// 用于在gradle中使用MyBatis Generator生成model,dao,mapper  使用命令：gradle mybatisGenerate
+/*configurations {
+    mybatisGenerator
+}*/
+
+// 在这个段落你可以声明你的项目的开发和测试所需的依赖类库
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    // spring boot 相关
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-test')
+
+    compile('org.springframework.boot:spring-boot-starter-aop')
+
+    compile('org.springframework.boot:spring-boot-configuration-processor')
+    // 如需生效，需要使用 bootRun命令启动(引入此会使得BaseBusiness中的get(主键)方法报错 实体不能转换成BaseEntity，具体原因暂不明确，估计是ClassLoader问题，如：https://my.oschina.net/zhuguowei/blog/536894)
+    // 解决方案，在META-INF/spring-devtools.properties中配置相关 参考：http://www.cnblogs.com/scholar-xie/p/7125515.html
+    // compile("org.springframework.boot:spring-boot-devtools")
+    compile 'org.springframework.boot:spring-boot-starter-tomcat' // tomcat相关不打包，war打包插件
+
+
+    compile files('lib/ojdbc6.jar')     //Oracal驱动包
+    compile 'com.alibaba:druid:1.0.25'  //阿里系的Druid依赖包
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-eureka
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-eureka', version: '1.3.2.RELEASE'//@EnableEurekaClient注解Jar包
+
+    compile('org.springframework.boot:spring-boot-starter-jdbc')    //数据交互与JdbcTemplate集成包
+    compile('org.springframework.boot:spring-boot-starter-data-jpa') //数据交互与JPA集成
+
+
+    compile('org.springframework.boot:spring-boot-starter-data-redis')  //redis开发包
+    // MyBatis相关
+    //'org.mybatis:mybatis:3.3.0',
+    //'org.mybatis:mybatis-spring:1.2.3',
+    compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.0')  //@Mapper注解包
+
+    //graphQl相关
+    compile 'com.graphql-java-kickstart:graphql-spring-boot-starter:5.0.4'
+    compile 'com.graphql-java-kickstart:graphiql-spring-boot-starter:5.0.4'
+}
+
+

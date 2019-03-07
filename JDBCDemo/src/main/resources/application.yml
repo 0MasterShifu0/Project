@@ -1,0 +1,33 @@
+##禁止Eureka服务注册中心也会将自己作为客户端来尝试注册它自己
+eureka.client.register-with-eureka: false
+eureka.client.fetch-registry: false 
+
+## 数据库连接 MySQL druid连接池配置
+datasource:
+  name: oracle
+  type: com.alibaba.druid.pool.DruidDataSource
+#  url: jdbc:mysql://39.108.112.239:3306/db_webme?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true # &allowMultiQueries=true是允许在mybatis中批量执行sql，必须要
+  url: jdbc:oracle:thin:@localhost:1521:XE
+  username: system
+  password: 1234
+  driver-class-name: com.oracle.jdbc.Driver
+  #连接池的配置信息
+  initialSize: 10
+  minIdle: 10
+  maxActive: 100
+  maxWait: 60000
+  timeBetweenEvictionRunsMillis: 60000
+  minEvictableIdleTimeMillis: 300000
+  validationQuery: SELECT 1 FROM DUAL
+  testWhileIdle: true
+  testOnBorrow: false
+  testOnReturn: false
+  poolPreparedStatements: true
+  maxPoolPreparedStatementPerConnectionSize: 20
+  filters: stat,wall,log4j
+  connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+
+mybatis:
+  config-locations: mybatis/mybatis-config.xml
+  mapper-locations: classpath*:/mapper/*/*.xml
+  type-aliases-package: com.example.modules.JdbcTemplate.entity

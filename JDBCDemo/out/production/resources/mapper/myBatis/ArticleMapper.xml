@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.modules.myBatis.dao.ArticleMapper">
+    <select id="queryById" resultType="com.example.modules.JdbcTemplate.entity.Article">
+        SELECT *
+        FROM article
+        WHERE id = #{value}
+    </select>
+
+    <insert id="insertArticle" parameterType="com.example.modules.JdbcTemplate.entity.Article" >
+        INSERT INTO article
+        (
+        id,
+        title,
+        summary,
+        status,
+        type,
+        userId
+        )
+        VALUES
+        (
+        #{id},
+        #{title},
+        #{summary},
+        #{status},
+        #{type},
+        #{userId}
+        )
+    </insert>
+
+    <update id="updateArticle" parameterType="com.example.modules.JdbcTemplate.entity.Article">
+        update article
+        <set>
+            <if test="id != null">id = #{id},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="summary != null">summary = #{summary},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="userId != null">userId = #{userId},</if>
+        </set>
+        where userId = #{userId}
+    </update>
+
+</mapper>
